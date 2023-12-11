@@ -1,0 +1,111 @@
+{
+    "workbench.colorTheme": "Dobri Next -A05- Jaguar",
+    "workbench.iconTheme": "material-icon-theme",
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "code-runner.runInTerminal": true,
+    "launch": {
+
+
+        "configurations": [],
+        "compounds": []
+    },
+    
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "editor.fontSize": 17,
+    "files.autoSave": "afterDelay",
+    "terminal.integrated.cursorStyle": "line",
+    "terminal.integrated.cursorBlinking": true,
+    "debug.console.fontSize": 18,
+    "terminal.integrated.fontSize": 17,
+    "editor.mouseWheelZoom": true,
+
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": [
+                    "entity.name.tag.html",
+                    "variable.other.readwrite.js",
+                    "variable.other.constant.js",
+                    "variable.other.object.js",
+                    "punctuation.terminator.statement.js"
+                ],
+                "settings": {
+                    "foreground": "#00ff00",
+                    "fontStyle": "italic"
+                }
+            },
+            {
+                "scope": [
+                    "text.html.derivative",
+                    "string.quoted.single.js"
+                ],
+                "settings": {
+                    "foreground": "#f2f0fa",
+                    "fontStyle": "italic"
+                }
+            },
+            {
+                "scope": [
+                    "string.quoted.double.html"
+                ],
+                "settings": {
+                    "foreground": "#0570fd",
+                    "fontStyle": "italic"
+                }
+            },
+            {
+                "scope": [
+                    "entity.other.attribute-name.html"
+                ],
+                "settings": {
+                    "foreground": "#fd3f05",
+                    "fontStyle": "italic"
+                }
+            },
+            {
+                "scope": [
+                    "entity.name.function.js",
+                    "storage.type.function.js"
+                ],
+                "settings": {
+                    "foreground": "#fdd004",
+                    "fontStyle": "italic"
+                }
+            },
+            {
+                "scope": [
+                    "support.class.component.js"
+                ],
+                "settings": {
+                    "foreground": "#04e0fd",
+                    "fontStyle": "italic bold"
+                }
+            },
+            {
+                "scope": [
+                    "keyword.control.import.js",
+                    "keyword.control.conditional.js",
+                    "storage.type.js"
+                ],
+                "settings": {
+                    "foreground": "#d305fc",
+                    "fontStyle": "italic"
+                }
+            },
+            {
+                "scope": [
+                    "variable.other.readwrite.alias.js"
+                ],
+                "settings": {
+                    "foreground": "#fc0557",
+                    "fontStyle": "italic bold underline"
+                }
+            }
+        ]  
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+
+
+}
