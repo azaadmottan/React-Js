@@ -6,6 +6,7 @@ import confService from "../services/confService.js";
 import { Logo } from '../components/index.js';
 import { FaRegHeart, FaHeart ,FaRegComment, FaComment, FaUser } from "react-icons/fa";
 import { FiSend } from "react-icons/fi";
+import { useForm } from 'react-hook-form';
 
 
 function Post() {
@@ -17,6 +18,7 @@ function Post() {
 
     
     const userId = useSelector((state) => state.auth.userData?.$id);
+    const userName = useSelector((state) => state.auth.userData?.name);
 
     const isAuthor = post && userId ? post.userId === userId : false;
 
@@ -70,6 +72,57 @@ function Post() {
         setComment(!comment);
     }
 
+
+    const {register, handleSubmit, reset} = useForm();
+
+    const createComment = async(data) => {
+
+        try {
+
+            const featuredImage = post.featuredImage;
+            const commentContent = data.commentContent;
+
+            const comment = await confService.createComment({ userId, userName, commentContent, featuredImage });
+
+            reset();
+
+            fetchComments();
+
+        } catch (error) {
+            
+            console.log("Error comment: ", error);
+        }
+    }
+
+    const [totalComment, setTotalComment] = useState([]);
+
+    const fetchComments = () => {
+        
+        try {
+            
+            const featuredImage = post.featuredImage;
+            confService.getAllComments({ featuredImage }).then((comments) => {
+    
+                if (comments) {
+        
+                    setTotalComment(comments.documents);
+                }
+                else {
+        
+                    setTotalComment("No Comment found on this post !");
+                }
+            });
+        } catch (error) {
+            
+        }
+    }
+
+    useEffect(() => {
+        
+        // const featuredImage = "65b38b62860840ca9c9b";
+        fetchComments();
+    }, [comment]);
+    
 
     return (
     <>
@@ -161,38 +214,64 @@ function Post() {
                         (comment) ? (
                             <>
                             <div className='mt-6 bg-white px-4 py-4 rounded-xl'>
-                                <div className='h-52 overflow-y-scroll'>
-                                <p className='bg-zinc-200 w-full flex items-center gap-4 text-lg p-3 mt-4 rounded-lg'>
+                                <div className='h-[50vh] overflow-y-scroll'>
 
-                                    <FaUser size={"23px"} />
-                                    <span>Add some comment here...</span>
+                                    {
+                                        totalComment.map((commentItem) => (
+                                        !(commentItem.userId === userId) ? (
 
-                                </p>
-                                
-                                <p className='bg-zinc-200 w-full flex items-center gap-4 text-lg p-3 mt-4 rounded-lg'>
+                                            <div key={commentItem.$id}  className='w-full flex items-center justify-start'>
+                                            
+                                                <div className='bg-zinc-200 w-[60%] flex items-center  gap-4 text-lg px-6 py-1 mt-4 rounded-full'>
+                                                <div className='flex items-center gap-4'>
+                                                    <FaUser size={"23px"} />
+                                                    <div className='flex flex-col'>
+                                                        <span className='text-sm font-semibold tracking-wider'>@{commentItem.userName}</span>
+                                                        <span className='text-md'>
+                                                            {commentItem.commentContent}
+                                                        </span>
+                                                    </div>
+                                                </div>
 
-                                    <FaUser size={"23px"} />
-                                    <span>Add some comment here...</span>
-                                </p>
-                                <p className='bg-zinc-200 w-full flex items-center gap-4 text-lg p-3 mt-4 rounded-lg'>
+                                                </div>
+                                            </div>
+                                        ) : (
 
-                                    <FaUser size={"23px"} />
-                                    <span>Add some comment here...</span>
-                                </p>
+                                            <div key={commentItem.$id} className='w-full flex items-center justify-end'>
+
+                                            <div className='bg-zinc-200 w-[60%] flex items-center  gap-4 text-lg px-6 py-1 mt-4 rounded-full'>
+                                                <div className='flex items-center gap-4'>
+                                                    <FaUser size={"23px"} />
+                                                    <div className='flex flex-col'>
+                                                    <span className='text-sm font-semibold tracking-wider'>@{commentItem.userName}</span>
+                                                        <span className='text-md'>
+                                                            {commentItem.commentContent}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            </div>
+                                        )
+                                    ))
+                                    }
+
+
                                 
                                 </div>
 
                                 <div className='mt-4'>
-                                    <form >
+                                    <form onSubmit={handleSubmit(createComment)} >
                                     <div className='flex items-center gap-4'>
                                     <input 
                                         type="text" 
                                         placeholder="Add a comment on post..." 
                                         className='w-full px-3 py-3 text-lg font-medium outline-none border-2 rounded-xl focus:border-blue-600'
+                                        {...register("commentContent", {required: true})}
                                     />
 
                                     <button 
-                                        type='submit' 
+                                        type='submit'
                                         className='px-4 py-4 bg-[#eb2442] text-white rounded-xl hover:bg-[#ff082d]'
                                     ><FiSend size={"23px"} title='Post Comment...' /></button>
                                     </div>

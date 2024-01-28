@@ -170,7 +170,51 @@ class ConfService {
         )
     }
 
-    
+    // create Comment On Post
+
+    async createComment ({ userId, userName, commentContent, featuredImage }) {
+
+        try {
+            return await this.database.createDocument(
+                config.appWriteDatabaseId,
+                config.appWriteCommentCollectionId,
+                ID.unique(),
+                {
+                    userId,
+                    userName,
+                    commentContent,
+                    featuredImage,
+                }
+            );
+        } catch (error) {
+            
+            console.log(`\nSomething went wrong while create comment !\nError: ${error}`);
+        }
+    }
+
+    // get All Comments On Post
+
+    async getAllComments ({ featuredImage }) {
+
+
+        try {
+            
+            // const query = Query.equal("featuredImage", featuredImage);
+
+            // console.log(featuredImage, queries);
+
+            return await this.database.listDocuments(
+                config.appWriteDatabaseId,
+                config.appWriteCommentCollectionId,
+                [
+                    Query.equal("featuredImage", featuredImage)
+                ]
+            );
+        } catch (error) {
+            
+            console.log(`\nSomething went wrong while get comments on the post !\nError: ${error}`);
+        }
+    }
 }
 
 const confService = new ConfService();

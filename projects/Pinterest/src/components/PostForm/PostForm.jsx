@@ -36,7 +36,7 @@ function PostForm({ post }) {
 
     //     setSelectedOption(selectedValue === 'none' ? '' : selectedValue);
     // }
-    const userId = useSelector((state) => (state.auth.userId));
+    const userId = useSelector((state) => (state.auth.userData?.$id));
 
     const submit = async (data) => {
 
