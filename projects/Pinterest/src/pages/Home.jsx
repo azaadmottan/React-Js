@@ -35,8 +35,8 @@ function Home() {
 
             <section className='w-[100%] h-[95vh] px-[160px] py-[50px] flex bg-rose-200'>
 
-                <div>   
-                    <h2 className='text-6xl text-rose-800 font-bold text-center mt-48'>See it, make it, try it, do it</h2>
+                <div className='m-auto'>   
+                    <h2 className='text-6xl text-rose-800 font-bold text-center mt-42'>See it, make it, try it, do it</h2>
 
                     <p className='text-rose-600 mt-8 text-center w-[45%] m-auto text-xl'>The best part of Pinterest is discovering new things and ideas from people around the world.</p>
                 </div>

@@ -6,6 +6,7 @@ const config = {
     appWriteCollectionId: String(import.meta.env.VITE_APPWRITE_COLLECTION_ID),
     appWriteBucketId: String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
     appWriteCommentCollectionId: String(import.meta.env.VITE_APPWRITE_COMMENT_COLLECTION_ID),
+    appWriteLikeCollectionId: String(import.meta.env.VITE_APPWRITE_LIKE_COLLECTION_ID),
 }
 
 export default config;

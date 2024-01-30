@@ -58,12 +58,51 @@ function Post() {
     }
 
     const [like, setLike] = useState(false);
-
+    const [totalLikes, setTotalLikes] = useState(0);
     
-    const handleLike = () => {
+    const handleLike = async() => {
         
         setLike(!like);
+
+        try {
+            
+            const featuredImage = post.featuredImage;
+            await confService.likePost({ userId, userName, featuredImage });
+        } catch (error) {
+            
+            console.log(`Error: ${error}`);
+        }
     }
+
+    const fetchLikes = async() => {
+
+        try {
+            
+            const featuredImage = post.featuredImage;
+                
+            await confService.getLikes({ featuredImage }).then((like) => {
+
+                like.documents.map((post) => {
+
+                    if (post.userId === userId){
+                        
+                        setTotalLikes(like.total);
+                        setLike(true);
+                    }
+                })
+                
+            });
+        } catch (error) {
+            
+        }
+
+    }
+
+    useEffect(() => {
+        
+        fetchLikes();
+    }, [totalLikes, handleLike]);
+    
 
     const [comment, setComment] = useState(false);
 
@@ -116,6 +155,7 @@ function Post() {
             
         }
     }
+    // fetchComments();
 
     useEffect(() => {
         
@@ -185,7 +225,7 @@ function Post() {
                                         </>
                                         )
                                     }
-                                </span> 10.24k Likes
+                                </span> {totalLikes + " Likes"}
 
                             </span>
                             <span className='flex items-center gap-2 text-md font-semibold'>
@@ -204,7 +244,7 @@ function Post() {
 
                                     }
 
-                                </span> 8.02k Comments
+                                </span> {(totalComment.length === 0) ? "Comments" : totalComment.length + " Comments"}
                             </span>
 
                         </div>

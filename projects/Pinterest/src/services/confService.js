@@ -215,6 +215,67 @@ class ConfService {
             console.log(`\nSomething went wrong while get comments on the post !\nError: ${error}`);
         }
     }
+
+    // create Likes on Post
+
+    async likePost ({ userId, userName, featuredImage }){
+
+        try {
+            
+             // Check if the user has already liked the post
+            const existingLike = await this.database.listDocuments(
+                config.appWriteDatabaseId,
+                config.appWriteLikeCollectionId,
+                [
+                Query.equal("userId", userId),
+                Query.equal("featuredImage", featuredImage),
+                ]
+            );
+
+            if (existingLike.documents.length > 0) {
+                // If the user has already liked the post, perform unlike (delete the like document)
+                const likeDocumentId = existingLike.documents[0].$id;
+                await this.database.deleteDocument(
+                    config.appWriteDatabaseId,
+                    config.appWriteLikeCollectionId,
+                    likeDocumentId
+                );
+            }
+            else {
+
+                return await this.database.createDocument(
+                    config.appWriteDatabaseId,
+                    config.appWriteLikeCollectionId,
+                    ID.unique(),
+                    {
+                        userId,
+                        userName,
+                        featuredImage,
+                    }
+                );
+            }
+        } catch (error) {
+            
+            console.log(`\nSomething went wrong while like on post !\nError: ${error}`);
+        }
+    }
+
+    async getLikes ({ featuredImage }) {
+
+        try {
+            
+            return await this.database.listDocuments(
+                config.appWriteDatabaseId,
+                config.appWriteLikeCollectionId,
+                [
+                    Query.equal("featuredImage", featuredImage),
+                ]
+            )
+        } catch (error) {
+            
+            console.log(`\nSomething went wrong while getting likes on post !\nError: ${error}`);
+        }
+    }
 }
 
 const confService = new ConfService();
